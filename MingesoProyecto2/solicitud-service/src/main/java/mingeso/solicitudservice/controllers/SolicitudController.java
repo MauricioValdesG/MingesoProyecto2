@@ -1,24 +1,38 @@
 package mingeso.solicitudservice.controllers;
 
 import mingeso.solicitudservice.entities.SolicitudEntity;
+import mingeso.solicitudservice.repositories.SolicitudRepository;
 import mingeso.solicitudservice.services.SolicitudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/solicitud")
-@CrossOrigin(origins = "*")
 public class SolicitudController {
     @Autowired
     private SolicitudService solicitudService;
+    @Autowired
+    private SolicitudRepository solicitudRepository;
 
     @PostMapping("/create")
-    public ResponseEntity<SolicitudEntity> crearSolicitud(@RequestBody SolicitudEntity solicitud){
-        SolicitudEntity newSolicitud = solicitudService.guardarSolicitud(solicitud);
-        return ResponseEntity.ok(newSolicitud);
+    public ResponseEntity<SolicitudEntity> subirJustificativo(@RequestBody SolicitudEntity solicitud) {
+        ArrayList<SolicitudEntity> solicitudes = solicitudRepository.findAllByRut(solicitud.getRut_empleado());
+        for(int i = 0; i< solicitudes.size();i++){
+            if(solicitudes.get(i).getFecha().equals(solicitud.getFecha())){
+                return ResponseEntity.badRequest().build();
+            }
+        }
+        if(solicitud == null){
+            return ResponseEntity.badRequest().build();
+        }
+        else {
+            SolicitudEntity solicitudFinal  = solicitudService.guardarSolicitud(solicitud);
+            return ResponseEntity.ok(solicitud);
+        }
     }
 
     @GetMapping("/getAll")

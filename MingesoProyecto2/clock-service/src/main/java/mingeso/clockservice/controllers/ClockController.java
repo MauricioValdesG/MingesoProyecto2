@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/clocks")
-@CrossOrigin(origins = "*")
 public class ClockController {
 
     @Autowired

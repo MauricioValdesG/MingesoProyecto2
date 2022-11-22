@@ -25,9 +25,6 @@ public class SolicitudService {
         return solicitudRepository.findAll();
     }
 
-    public SolicitudEntity guardarSolicitudes(SolicitudEntity solicitud) {
-        return solicitudRepository.save(solicitud);
-    }
 
     public ArrayList<SolicitudEntity> findAllByRut(String rut_empleado){
         return solicitudRepository.findAllByRut(rut_empleado);
