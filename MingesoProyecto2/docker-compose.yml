@@ -1,0 +1,214 @@
+version: "3.8"
+services:
+  # Bases de datos
+  solicitudes-db:
+    container_name: solicitudes-db
+    image: mysql
+    restart: always
+    volumes:
+      - ./dockerVolumes/solicitudesDB:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: solicitudes
+    ports:
+      - 33061:3306
+
+  justificativos-db:
+    container_name: justificativos-db
+    image: mysql
+    restart: always
+    volumes:
+      - ./dockerVolumes/justificativosDB:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: justificativos
+    ports:
+      - 33062:3307
+
+  clocks-db:
+    container_name: clocks-db
+    image: mysql
+    restart: always
+    volumes:
+      - ./dockerVolumes/clocksDB:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: clocks
+    ports:
+      - 33063:3308
+
+  sueldos-db:
+    container_name: sueldos-db
+    image: mysql
+    restart: always
+    volumes:
+      - ./dockerVolumes/sueldosDB:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: sueldos
+    ports:
+      - 33064:3309
+
+  employees-db:
+    container_name: employees-db
+    image: mysql
+    restart: always
+    volumes:
+      - ./dockerVolumes/employeesDB:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: employees
+    ports:
+      - 33065:3310
+
+  # Microservicios
+  config-service:
+    container_name: config-service
+    image: mauriciovg/config-service
+    ports:
+      - "8081:8081"
+  eureka-service:
+    container_name: eureka-service
+    image: mauriciovg/eureka-service
+    ports:
+      - "8761:8761"
+    depends_on:
+      - config-service
+    links:
+      - config-service
+    deploy:
+      restart_policy:
+        condition: on-failure
+    environment:
+      - spring.config.import=optional:configserver:http://config-service:8081
+
+  gateway-service:
+    container_name: gateway-service
+    image: mauriciovg/gateway-service:latest
+    deploy:
+      restart_policy:
+        condition: on-failure
+    environment:
+      - spring.config.import=optional:configserver:http://config-service:8081
+      - EUREKA_URL=http://eureka-service:8761/eureka/
+    ports:
+      - "8080:8080"
+    depends_on:
+      - config-service
+      - eureka-service
+    links:
+      - config-service
+      - eureka-service
+
+  clock-service:
+    container_name: clock-service
+    image: mauriciovg/clock-service:latest
+    ports:
+      - "31231:8091"
+    environment:
+      - spring.config.import=optional:configserver:http://config-service:8081
+      - EUREKA_URL=http://eureka-service:8761/eureka/
+      - DB_URL=jdbc:mysql://clocks-db:3306/clocks
+      - DB_USERNAME=root
+      - DB_PASSWORD=123456
+    deploy:
+        restart_policy:
+          condition: on-failure
+    depends_on:
+      - config-service
+      - eureka-service
+    links:
+      - config-service
+      - eureka-service
+
+  justificativo-service:
+    container_name: justificativo-service
+    image: mauriciovg/justificativo-service:latest
+    ports:
+      - "31438:8092"
+    environment:
+      - spring.config.import=optional:configserver:http://config-service:8081
+      - EUREKA_URL=http://eureka-service:8761/eureka/
+      - DB_URL=jdbc:mysql://justificativos-db:3306/justificativos
+      - DB_USERNAME=root
+      - DB_PASSWORD=123456
+    deploy:
+        restart_policy:
+          condition: on-failure
+    depends_on:
+      - config-service
+      - eureka-service
+    links:
+      - config-service
+      - eureka-service
+
+  solicitud-service:
+    container_name: solicitud-service
+    image: mauriciovg/solicitud-service:latest
+    ports:
+      - "31439:8093"
+    environment:
+      - spring.config.import=optional:configserver:http://config-service:8081
+      - EUREKA_URL=http://eureka-service:8761/eureka/
+      - DB_URL=jdbc:mysql://solicitudes-db:3306/solicitudes
+      - DB_USERNAME=root
+      - DB_PASSWORD=123456
+    deploy:
+        restart_policy:
+          condition: on-failure
+    depends_on:
+      - config-service
+      - eureka-service
+    links:
+      - config-service
+      - eureka-service
+
+  sueldo-service:
+    container_name: sueldo-service
+    image: mauriciovg/sueldo-service:latest
+    ports:
+      - "31232:8094"
+    environment:
+      - spring.config.import=optional:configserver:http://config-service:8081
+      - EUREKA_URL=http://eureka-service:8761/eureka/
+      - DB_URL=jdbc:mysql://sueldos-db:3306/sueldos
+      - DB_USERNAME=root
+      - DB_PASSWORD=123456
+    deploy:
+        restart_policy:
+          condition: on-failure
+    depends_on:
+      - config-service
+      - eureka-service
+    links:
+      - config-service
+      - eureka-service
+
+  employee-service:
+    container_name: employee-service
+    image: mauriciovg/employee-service:latest
+    ports:
+      - "31233:8090"
+    environment:
+      - spring.config.import=optional:configserver:http://config-service:8081
+      - EUREKA_URL=http://eureka-service:8761/eureka/
+      - DB_URL=jdbc:mysql://employees-db:3306/employees
+      - DB_USERNAME=root
+      - DB_PASSWORD=123456
+    deploy:
+        restart_policy:
+          condition: on-failure
+    depends_on:
+      - config-service
+      - eureka-service
+    links:
+      - config-service
+      - eureka-service
+
+
+volumes:
+  justificativoDB:
+  solicitudDB:
+  clocksDB:
+  sueldoDB:
+  employeeDB:
