@@ -7,6 +7,7 @@ import Justificativos from './pages/Justificativos'
 import Solicitudes from './pages/Solicitudes'
 import ReporteSueldo from './pages/Planilla'
 import UploadData from './pages/UploadData';
+import Empleados from './pages/Empleado';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Container>
         <Routes>
           <Route path='/' element={<Index />} exact/>
+          <Route path='/Empleados' element={<Empleados />} />
           <Route path='/Justificativos' element={<Justificativos/>} exact />
           <Route path='/Solicitudes' element={<Solicitudes/>} exact />
           <Route path='/Planilla' element={<ReporteSueldo/>} exact />

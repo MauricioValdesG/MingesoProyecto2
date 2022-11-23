@@ -38,22 +38,13 @@ public class JustificativoController {
     @GetMapping("/getAll")
     public ResponseEntity<List<JustificativoEntity>> obtenerJustificativos(){
         List<JustificativoEntity> justificativos = justificativoService.obtenerJustificativos();
-        if(justificativos.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        else {
-            return ResponseEntity.ok(justificativos);
-        }
+        return ResponseEntity.ok(justificativos);
     }
 
     @GetMapping("/empleado/{id}")
     public ResponseEntity<List<JustificativoEntity>> getById(@PathVariable("id") int id_empleado) {
 
         List<JustificativoEntity> justificativosEmpleado= justificativoService.findAllById(id_empleado);
-
-        if(justificativosEmpleado.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(justificativosEmpleado);
     }
 }

@@ -9,6 +9,7 @@ const Menu = () => {
                 <Navbar.Collapse id="responsive-navbar">
                     <Nav className='me-auto'>
                         <Nav.Link href="/">Inicio</Nav.Link>
+                        <Nav.Link href="/Empleados">Empleados</Nav.Link>
                         <Nav.Link href="/Upload">Subir Marcas de reloj</Nav.Link>
                         <Nav.Link href="/Justificativos">Justificativos</Nav.Link>
                         <Nav.Link href="/Solicitudes">Solicitudes</Nav.Link>

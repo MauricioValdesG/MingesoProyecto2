@@ -33,26 +33,18 @@ public class ClockController {
     @GetMapping("/getAll")
     public ResponseEntity<List<ClockEntity>> getAll(){
         List<ClockEntity> marcas= clockService.getAll();
-        if(marcas.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(marcas);
     }
 
     @GetMapping("/getById/{id}")
     public ResponseEntity<ClockEntity> getById(@PathVariable("id") int id) {
         ClockEntity marca = clockService.obtenerPorId(id);
-        if(marca == null)
-            return ResponseEntity.notFound().build();
         return ResponseEntity.ok(marca);
     }
 
     @GetMapping("/empleado/{id}")
     public ResponseEntity<List<ClockEntity>> getByIdEmpleado(@PathVariable("id") int id) {
         List<ClockEntity> marcas= clockService.findAllById(id);
-        if(marcas.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(marcas);
     }
 }

@@ -28,14 +28,9 @@ public class SueldoController {
         for (int i=0; i < employees.size();i++){
             employeeActual = employees.get(i);
             sueldoService.crearPlanilla(employeeActual, id_sueldo);
-            id_sueldo=id_sueldo+1;
+            id_sueldo = id_sueldo + 1;
         }
         ArrayList<SueldoEntity> sueldos = sueldoService.obtenerSueldos();
-        if(sueldos.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        else {
-            return ResponseEntity.ok(sueldos);
-        }
+        return ResponseEntity.ok(sueldos);
     }
 }

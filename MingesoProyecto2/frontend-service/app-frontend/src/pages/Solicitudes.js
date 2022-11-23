@@ -43,8 +43,6 @@ const Solicitudes = () => {
         }
     }
 
-    const [inputs, setInputs] = useState({});
-
 return (
     <Container style={{ marginTop: '70px' }}>
         <Card className='text-center'>

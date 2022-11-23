@@ -38,22 +38,12 @@ public class SolicitudController {
     @GetMapping("/getAll")
     public ResponseEntity<List<SolicitudEntity>> obtenerSolicitudes(){
         List<SolicitudEntity> solicitudes = solicitudService.obtenerSolicitudes();
-        if(solicitudes.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        else {
-            return ResponseEntity.ok(solicitudes);
-        }
+        return ResponseEntity.ok(solicitudes);
     }
 
     @GetMapping("/empleado/{id}")
     public ResponseEntity<List<SolicitudEntity>> getById(@PathVariable("id") int id_empleado) {
-
         List<SolicitudEntity> solicitudesEmpleado= solicitudService.findAllById(id_empleado);
-
-        if(solicitudesEmpleado.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(solicitudesEmpleado);
     }
 

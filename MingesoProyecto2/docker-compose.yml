@@ -64,12 +64,12 @@ services:
   # Microservicios
   config-service:
     container_name: config-service
-    image: mauriciovg/config-service
+    image: mauriciovg/config-service:latest
     ports:
       - "8081:8081"
   eureka-service:
     container_name: eureka-service
-    image: mauriciovg/eureka-service
+    image: mauriciovg/eureka-service:latest
     ports:
       - "8761:8761"
     depends_on:
