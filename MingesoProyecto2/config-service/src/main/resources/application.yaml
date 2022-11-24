@@ -8,5 +8,6 @@ spring:
           default-label: main
           uri: https://github.com/MauricioValdesG/microsevices-data-project
           search-paths: config-data
+          skip-ssl-validation: true
   application:
     name: config-service

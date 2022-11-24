@@ -4,25 +4,8 @@ spring:
   cloud:
     config:
       enabled: true
-      fail-fast: true
-      retry:
-        maxAttempts: 200
-        maxInterval: 10000
-      uri: http://localhost:8081
-  datasource:
-    url: jdbc:mysql://localhost:3306/sueldos
-    username: root
-    password: Chile&2022
-  jpa:
-    properties:
-      hibernate:
-        '[globally_quoted_identifiers]': true
-        jdbc:
-          lob:
-            '[non_contextual_creation]': true
-    hibernate:
-      use-new-id-generator-mappings: false
-      ddl-auto: update
+      uri: http://localhost:8081/
+
 management:
   endpoints:
     web:
